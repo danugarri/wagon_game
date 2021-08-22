@@ -4,7 +4,6 @@
 consumes 1 día
 pierdes 15 unidades de suministro
 avanzas 10 km
-
 # Al repostar
 Consumes 1 día
 Recuperas 20 unidades de suministro

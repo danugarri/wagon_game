@@ -1,0 +1,3 @@
+EL CONTENIDO de este componente wagon es el que tengo a fecha del 22 de agosto en el index.js
+lo ideal es separarlo en componentes y que haya un componente padre que realice el renderizado de todos los componentes
+es decir mostrarlo todo en index.js

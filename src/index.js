@@ -2,6 +2,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux'
+import { Instructions} from './components/Instructions/Instructions';
+import '../src/components/wagon/wagon.scss'
+import swal from 'sweetalert';
+
+
 
 
 
@@ -29,33 +34,64 @@ const initialWagonState= {
         }
       }
       case 'travel' : {
+        //Randomly calculate id the wagon tipped
+  const randomNum = Math.floor(Math.random()*4)//get a random number between 0 and 4
+  if(randomNum===2){
+     alert('has volcado, pierdes 30 unidades de suministro, y tardas 1 día más')
+   if(state.supplies>30 ){ 
+  return { 
+    ...state,
+     supplies: state.supplies -(action.payload.supplies),
+     distance:state.distance,
+     days:state.days + action.payload.days
+    }
+   }
+   else if (state.supplies<30){
+     console.log('\nHas perdido!!')
+      swal('\nHas perdido!! ')
+      return { 
+       ...initialWagonState,
+       }
+   }
+}
         //determina los días que viaja
-        if(state.supplies>20 && state.supplies -(action.payload *20) > 0 ){ 
+        if(state.supplies>20 && state.supplies -(action.payload.days *20) > 0 ){ 
   // el mínmo de suministros para viajar por día es de 20
         return {
           ...state,
-          supplies:state.supplies -(action.payload *20),
-          distance:state.distance +(10*action.payload),
-          days:state.days + action.payload
+          supplies:state.supplies -(action.payload.days *20),
+          distance:state.distance +(10*action.payload.days),
+          days:state.days + action.payload.days
         }
        }
-       else if (state.supplies<20||state.supplies -(action.payload *20) < 20 ){
-         console.log('\nyou do not have enough supplies to travel for: '+action.payload+' more day/s, you need at least 20 supllies to travel per day')
-          alert('\nNo tienes suficientes suministros para viajar durante : '+action.payload+'  día/s más, necesitas al menos 20 unidades de suministro, ¡¡RECARGA!!')
+       else if (state.supplies<20||state.supplies -(action.payload.days *20) < 20 ){
+         console.log('\nyou do not have enough supplies to travel for: '+action.payload.days+' more day/s, you need at least 20 supllies to travel per day')
+          swal('\nNo tienes suficientes suministros para viajar durante : '+action.payload.days+'  día/s más, necesitas al menos 20 unidades de suministro, ¡¡RECARGA!!')
          return {
           ...state
         }
        }
        break
       }
+      //en principio no voy a usar el botón de volcar, lo meto para que salga aleatorio en el botón de viajar
         //vuelca el wagon
       case 'tippedWagon' : {
+        if(state.supplies>30 ){ 
        return { 
          ...state,
           supplies: state.supplies -(action.payload.supplies),
           distance:state.distance,
           days:state.days + action.payload.days
          }
+        }
+        else if (state.supplies<30){
+          console.log('\nHas perdido!!')
+           swal('\nHas perdido!! ')
+           return { 
+            ...initialWagonState,
+            }
+        }
+        break
       }
        default : {
         return state
@@ -78,7 +114,11 @@ const store = createStore(reducer)
   }
   const actionTravel = {
     type:'travel',
-    payload:1// 1 day per travel
+    payload:{
+      supplies:30,
+      distance: 10,
+      days: 1
+    }// 1 day per travel
   }
    const actionTipped= {
     type: 'tippedWagon',
@@ -114,21 +154,15 @@ const store = createStore(reducer)
         store.dispatch(actionTravel) 
       }
 
+      
+
 
       return (
-          <div style={{textAlign:'center'}}>
-            <h1> Juego del vagon</h1>
-            <ul style={{margin:'2px',padding:'10px',listStyle:'none'}}>
-              
-              {/*método Object.entries del estado inicial para que me devuelva los  keys y los values*/}
-              {Object.entries(initialWagonState).map(element =><li> {element[0]} : {element[1]}</li>)}  
-              <ul style={{margin:'2px',padding:'10px',listStyle:'none'}}> 
-                {/*Esta parte del estado funciona, me falta sacar la lógica para mostrarlo de forma dinámica*/}
-                <li>{state.supplies}</li>
-                <li>{state.distance}</li>
-                <li>{state.days}</li>
-                </ul> 
-                   
+          <div style={{textAlign:'center'}} >
+            <h1 style={{padding:'10px'}}> La aventura del vagón</h1>
+            <ul>
+              {/*método Object.entries del state para que me devuelva los  keys y los values*/}
+              {Object.entries(state).map((elemt) =><li> {elemt[0]} : {elemt[1]}</li>)}       
             </ul>
               
                  
@@ -140,7 +174,10 @@ const store = createStore(reducer)
   }
   const render = () =>{
     ReactDOM.render(
-        <Ui  state= {store.getState()}/>,
+      <React.StrictMode>
+        <Ui  state= {store.getState()}/>
+        <Instructions />
+      </React.StrictMode>,
         document.getElementById('root')
     )
 }
