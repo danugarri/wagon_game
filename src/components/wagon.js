@@ -3,7 +3,8 @@ import React from 'react'
 import ReactDOM from 'react-dom';
 import {createStore} from 'redux'
 
-
+// create store for redux to manage the app state 
+const store = createStore(reducer)
 
 // ** Initial State and Reducer **
 
@@ -39,18 +40,16 @@ const initialWagonState= {
           days:state.days + action.payload
         }
        }
-       else if (state.supplies<20||state.supplies -(action.payload *20) < 20 ){
+       else if(state.supplies<20||state.supplies -(action.payload *20) < 20 ){
          console.log('\nyou do not have enough supplies to travel for: '+action.payload+' more day/s, you need at least 20 supllies to travel per day')
-          alert('\nNo tienes suficientes suministros para viajar durante : '+action.payload+'  día/s más, necesitas al menos 20 unidades de suministro, ¡¡RECARGA!!')
-         return {
+          return {
           ...state
         }
        }
-       break
       }
-        //vuelca el wagon
       case 'tippedWagon' : {
-       return { 
+        //vuelca el wagon
+       return{ 
          ...state,
           supplies: state.supplies -(action.payload.supplies),
           distance:state.distance,
@@ -62,9 +61,6 @@ const initialWagonState= {
        }
   }
   }
-  // create store for redux to manage the app state 
-const store = createStore(reducer)
-
   
    //Actions
   
@@ -78,7 +74,7 @@ const store = createStore(reducer)
   }
   const actionTravel = {
     type:'travel',
-    payload:1// 1 day per travel
+    payload:3//asumimos que va a viajar 3 días
   }
    const actionTipped= {
     type: 'tippedWagon',
@@ -94,8 +90,15 @@ const store = createStore(reducer)
   //REACT CODE
 
   //RENDER function to display component
-//{Object.keys(initialWagonState).map(key => <li>{key.distance}</li>)}
-  
+
+  const render = () =>{
+      ReactDOM.render(
+          <Ui  state= {store.getState()}/>,
+          document.getElementById('root')
+      )
+  }
+  //call to render() function
+  render()
 //function component
   const Ui = (props) =>{
       const state= props.state
@@ -103,50 +106,23 @@ const store = createStore(reducer)
       //function listeners
 
       const gotSupplies = () =>{
-          store.dispatch(actionGather)
+          store.dispatch(actionGather())
       }
 
       const tippedWagon = ()=>{
-        store.dispatch(actionTipped) 
+        store.dispatch(actionTravel()) 
       }
 
       const setTravel = ()=>{
-        store.dispatch(actionTravel) 
+        store.dispatch(actionTipped()) 
       }
 
-
       return (
-          <div style={{textAlign:'center'}}>
-            <h1> Juego del vagon</h1>
-            <ul style={{margin:'2px',padding:'10px',listStyle:'none'}}>
-              
-              {/*método Object.entries del estado inicial para que me devuelva los  keys y los values*/}
-              {Object.entries(initialWagonState).map(element =><li> {element[0]} : {element[1]}</li>)}  
-              <ul style={{margin:'2px',padding:'10px',listStyle:'none'}}> 
-                {/*Esta parte del estado funciona, me falta sacar la lógica para mostrarlo de forma dinámica*/}
-                <li>{state.supplies}</li>
-                <li>{state.distance}</li>
-                <li>{state.days}</li>
-                </ul> 
-                   
-            </ul>
-              
-                 
-              <button onClick={gotSupplies}>Recargar</button>
-              <button onClick={tippedWagon}>Volcar vagón</button>
-              <button onClick={setTravel}>Viajar</button>
+          <div>
+              <ul>
+                  <li>{object.keys(initialWagonState)}</li>
+              </ul>
           </div>
       )
   }
-  const render = () =>{
-    ReactDOM.render(
-        <Ui  state= {store.getState()}/>,
-        document.getElementById('root')
-    )
-}
-//call to render() function
-render()
 
-//subscribe render() function to store
-
-store.subscribe(render)
