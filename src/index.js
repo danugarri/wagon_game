@@ -8,6 +8,8 @@ import '../src/components/wagon/wagon.scss'
 //import all the logic from 
 import {reducer,actionGather,actionReset,actionTravel} from '../src/components/logic/logic'
 
+//import { GameOver } from './components/GameOver/GameOver';
+
 
 
   

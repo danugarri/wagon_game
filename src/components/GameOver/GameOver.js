@@ -1,5 +1,5 @@
 import React from 'react';
-//import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom'
 
 
 
@@ -14,3 +14,14 @@ export const GameOver = () => {
         </body>
     )
 }
+
+export const renderGameOver = () =>{
+    ReactDOM.render(
+      <React.StrictMode>
+        <GameOver/>
+      </React.StrictMode>,
+        document.getElementById('root')
+    )
+  }
+
+ 
