@@ -8,37 +8,21 @@ const objInstructions = {
 
     'Al repostar': ' Consumes 1 día, Recuperas 20 unidades de suministro, No avanzas distancia',
 
-    'Al Volcar' :' Pierdes 1 día en arraeglar el vagón, pierdes 30 unidades de suministro, no avanzas distancia'
+    'Al Volcar' :' Pierdes 1 día en arraeglar el vagón, pierdes 30 unidades de suministro, no avanzas distancia',
+    'Game over' :' Si vuelcas teniendo menos de 30 unidades',
+    'Victoria' :' Si recorres 80 km entre 9 y 12 días'
     
 }
-const instructionsValues = Object.values(objInstructions)
+
 
 export const Instructions = () =>{
     return (
         <div >
             <h2>Instrucciones</h2>
-            <ul id='bg'>
-                <li id="instruc">
-                    <h3># Al viajar: 
-                        {instructionsValues[0]}
-                    </h3>
-                </li>
-                
-                <li>
-                    <h3>
-                    # Al repostar:
-                    {instructionsValues[1]}
-
-                    </h3>
-                </li>
-                <li>
-                    <h3>
-                    # Al Volcar:
-                    {instructionsValues[2]}
-                    </h3>
-                </li>
+            <ul id='bg' >
+                {Object.entries(objInstructions).map(Element =><h3># {Element[0]} : {Element[1] }</h3>) }
             </ul>
 
         </div>
-    )
+    ) 
 }

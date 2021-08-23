@@ -1,4 +1,4 @@
-# El objetivo del juego es recorrer 100 km en 8 días o menos ( esto tengo que probarlo para ajustarlo a más fácil o más difícil)
+# El objetivo del juego es recorrer 80 km entre 9 y 12  días 
 
 # Al viajar: 
 consumes 1 día

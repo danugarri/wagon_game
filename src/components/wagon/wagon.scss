@@ -1,14 +1,31 @@
+h1{
+    background-color: rgb(26, 25, 25);
+    border-style:ridge
+}
 ul{
     margin:'2px';
     padding:'10px';
     list-style:'';
-    
   
 }
+li{
+    font-size:x-large;
+}
+
 button{
    padding: 4px;
-   margin:2px;
-    background-color: red;
+   margin:5px;
+    background-color: rgb(218, 89, 14);
+    cursor: pointer;
+    border: 4px double brown;
+  /*  &:hover{
+        transition-property: width;
+        transition-duration: 750ms;
+        transition-timing-function: linear;
+        width:100px;
+        
+    }*/
+   
 }
 
 #root{
@@ -19,10 +36,10 @@ button{
     background-position: center;
     background-size: cover;
     margin-top: 5%;
+    
 }
 body{
   
-    
-  
     background-color: brown;
+  
 }

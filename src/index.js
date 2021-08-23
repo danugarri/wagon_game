@@ -4,137 +4,34 @@ import ReactDOM from 'react-dom';
 import {createStore} from 'redux'
 import { Instructions} from './components/Instructions/Instructions';
 import '../src/components/wagon/wagon.scss'
-import swal from 'sweetalert';
+
+//import all the logic from 
+import {reducer,actionGather,actionReset,actionTravel} from '../src/components/logic/logic'
 
 
 
-
-
-// ** Initial State and Reducer **
-
-//Initial State
-
-const initialWagonState= {
-    supplies: 100,
-    distance: 0,
-    days: 0
-  }
   
-  //Reducer
-  
-  const reducer = (state = initialWagonState,action) => {
-    switch(action.type) {
-      case 'gather' : {
-        //determina una recarga
-        return  {
-          ...state,
-        supplies:state.supplies + action.payload.supplies,
-        distance:state.distance,
-        days: state.days + action.payload.days
-        }
-      }
-      case 'travel' : {
-        //Randomly calculate id the wagon tipped
-  const randomNum = Math.floor(Math.random()*4)//get a random number between 0 and 4
-  if(randomNum===2){
-     alert('has volcado, pierdes 30 unidades de suministro, y tardas 1 día más')
-   if(state.supplies>30 ){ 
-  return { 
-    ...state,
-     supplies: state.supplies -(action.payload.supplies),
-     distance:state.distance,
-     days:state.days + action.payload.days
-    }
-   }
-   else if (state.supplies<30){
-     console.log('\nHas perdido!!')
-      swal('\nHas perdido!! ')
-      return { 
-       ...initialWagonState,
-       }
-   }
-}
-        //determina los días que viaja
-        if(state.supplies>20 && state.supplies -(action.payload.days *20) > 0 ){ 
-  // el mínmo de suministros para viajar por día es de 20
-        return {
-          ...state,
-          supplies:state.supplies -(action.payload.days *20),
-          distance:state.distance +(10*action.payload.days),
-          days:state.days + action.payload.days
-        }
-       }
-       else if (state.supplies<20||state.supplies -(action.payload.days *20) < 20 ){
-         console.log('\nyou do not have enough supplies to travel for: '+action.payload.days+' more day/s, you need at least 20 supllies to travel per day')
-          swal('\nNo tienes suficientes suministros para viajar durante : '+action.payload.days+'  día/s más, necesitas al menos 20 unidades de suministro, ¡¡RECARGA!!')
-         return {
-          ...state
-        }
-       }
-       break
-      }
-      //en principio no voy a usar el botón de volcar, lo meto para que salga aleatorio en el botón de viajar
-        //vuelca el wagon
-      case 'tippedWagon' : {
-        if(state.supplies>30 ){ 
-       return { 
-         ...state,
-          supplies: state.supplies -(action.payload.supplies),
-          distance:state.distance,
-          days:state.days + action.payload.days
-         }
-        }
-        else if (state.supplies<30){
-          console.log('\nHas perdido!!')
-           swal('\nHas perdido!! ')
-           return { 
-            ...initialWagonState,
-            }
-        }
-        break
-      }
-       default : {
-        return state
-       }
-  }
-  }
   // create store for redux to manage the app state 
 const store = createStore(reducer)
 
   
-   //Actions
   
-   const actionGather= {
-    type: 'gather',
-    payload: {
-      supplies:15,
-      distance: 0,
-      days: 1
-    }
-  }
-  const actionTravel = {
-    type:'travel',
-    payload:{
-      supplies:30,
-      distance: 10,
-      days: 1
-    }// 1 day per travel
-  }
-   const actionTipped= {
-    type: 'tippedWagon',
-    payload: {
-      supplies:30,
-      distance: 0,
-      days: 1
-    }
-  }
+  
   /////////////////////////////////////////////////////////////////////////
   //implementing UI
 
   //REACT CODE
 
-  //RENDER function to display component
-//{Object.keys(initialWagonState).map(key => <li>{key.distance}</li>)}
+//RENDER function to display component
+const render = () =>{
+  ReactDOM.render(
+    <React.StrictMode>
+      <Ui  state= {store.getState()}/>
+      <Instructions />
+    </React.StrictMode>,
+      document.getElementById('root')
+  )
+}
   
 //function component
   const Ui = (props) =>{
@@ -145,16 +42,20 @@ const store = createStore(reducer)
       const gotSupplies = () =>{
           store.dispatch(actionGather)
       }
-
+/*
+Finally i am not going to show thw tipped( volcar) button
       const tippedWagon = ()=>{
         store.dispatch(actionTipped) 
       }
-
+*/
       const setTravel = ()=>{
         store.dispatch(actionTravel) 
       }
 
-      
+      // event handler function to reset
+      const reset = () =>{
+       store.dispatch(actionReset)
+      }
 
 
       return (
@@ -166,21 +67,17 @@ const store = createStore(reducer)
             </ul>
               
                  
-              <button onClick={gotSupplies}>Recargar</button>
-              <button onClick={tippedWagon}>Volcar vagón</button>
+              <button onClick={gotSupplies}>Repostar</button>
+              {/*<button onClick={tippedWagon}>Volcar vagón</button>*/}
               <button onClick={setTravel}>Viajar</button>
+              <button onClick={reset}>Reiniciar</button>
+              
           </div>
       )
   }
-  const render = () =>{
-    ReactDOM.render(
-      <React.StrictMode>
-        <Ui  state= {store.getState()}/>
-        <Instructions />
-      </React.StrictMode>,
-        document.getElementById('root')
-    )
-}
+
+  
+  
 //call to render() function
 render()
 
