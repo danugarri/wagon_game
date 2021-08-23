@@ -1,3 +1,5 @@
+//componente para próximas implementaciones
+
 import React from 'react';
 import ReactDOM from 'react-dom'
 
