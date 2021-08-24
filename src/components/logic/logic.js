@@ -47,7 +47,7 @@ const initialWagonState= {
    }
 }
         //determina los días que viaja
-        if(state.Suministros>20 && state.Suministros -(action.payload.Días *20) > 0 ){ 
+        if(state.Suministros>=20 && state.Suministros -(action.payload.Días *20) >= 0 ){ 
   // el mínmo de suministros para viajar por día es de 20
         return {
           ...state,
@@ -56,7 +56,7 @@ const initialWagonState= {
           Días:state.Días + action.payload.Días
         }
        }
-       else if (state.Suministros<20||state.Suministros -(action.payload.Días *20) < 20 ){
+       else if (state.Suministros<20||state.Suministros -(action.payload.Días *20) < 20 || (state.Suministros === 0 )){
          console.log('\nyou do not have enough supplies to travel for: '+action.payload.Días+' more day/s, you need at least 20 supllies to travel per day')
           swal('\nNo tienes suficientes suministros para viajar durante : '+action.payload.Días+'  día/s más, necesitas al menos 20 unidades de suministro, ¡¡RECARGA!!')
          return {

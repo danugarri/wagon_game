@@ -10,7 +10,7 @@ const objInstructions = {
 
     'Al Volcar' :' Pierdes 1 día en arraeglar el vagón, pierdes 30 unidades de suministro, no avanzas distancia',
     'Game over' :' Si vuelcas teniendo menos de 30 unidades',
-    'Victoria' :' Si recorres 80 km entre 9 y 12 días'
+    'Victoria' :' Si recorres 80 km entre 12 y 13 días'
     
 }
 

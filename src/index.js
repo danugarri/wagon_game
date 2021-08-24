@@ -68,7 +68,6 @@ Finally i am not going to show thw tipped( volcar) button
               {Object.entries(state).map((elemt) =><li> {elemt[0]} : {elemt[1]}</li>)}       
             </ul>
               
-                 
               <button onClick={gotSupplies}>Repostar</button>
               {/*<button onClick={tippedWagon}>Volcar vagón</button>*/}
               <button onClick={setTravel}>Viajar</button>
